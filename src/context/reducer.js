@@ -15,13 +15,6 @@ export function reducer(state, action) {
     
       return newState
     }
-    case 'LIMPA_PESQUISA': {
-      const newState = { ...state }
-
-      newState.apiDados = null
-
-      return newState
-    }
     case 'API_DADOS': {
       const newState = { ...state }
 

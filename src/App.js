@@ -1,10 +1,12 @@
-import axios from 'axios';
-import { useState } from 'react';
 import './App.css';
-import Search from './components/Search';
+import Search from './components/Search/Search';
 import Header from './components/Header/Header';
 
 import ContentProvider from './context/ContentProvider';
+import Home from './template/Home/Home';
+import Serie from './template/Serie/Serie';
+
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 function App() {
 
@@ -13,8 +15,16 @@ function App() {
   return (
     <div className='container'>
       <ContentProvider>
+
+      <Router>
         <Header />
-        <Search />
+        <Routes>
+          <Route path='/' element={ <Home />} />
+          <Route path='/search/:titulo' element={ <Search />} />
+          <Route path='/serie/:id' element={ <Serie />} />
+        </Routes>
+      </Router>
+        
         
       </ContentProvider>
     </div>

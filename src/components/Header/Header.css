@@ -17,6 +17,10 @@
   cursor: pointer;
 }
 
+.Header-navBar > ul > li > h1 > a {
+  text-decoration: none;
+}
+
 .Header-navBar > ul > li > h1 {
   font-size: 1.2em;
   color: #88f399;

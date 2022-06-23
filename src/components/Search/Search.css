@@ -1,0 +1,17 @@
+.Search-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, auto));
+  padding: 2em;
+}
+
+.Search-unidade {
+  margin-bottom: 1em;
+  text-align: center;
+}
+
+
+.Search-unidade > a{
+  text-decoration: none;
+}
+
+
