@@ -1,6 +1,6 @@
 .Header-navBar {
   padding: 1em 2em 1em 1em;
-  background-color: rgba(232,49,81)
+  background-color: #931026
 }
 
 
@@ -21,10 +21,14 @@
   text-decoration: none;
 }
 
-.Header-navBar > ul > li > h1 {
-  font-size: 1.2em;
-  color: #88f399;
+.Header-navBar-titulo > a{
+
+  color: #FEFF67;
+  text-shadow:#000 -2px -2px;
+  font-size: 1em;
 }
+
+
 
 .Header-navBar-imgTV {
   width: 2.6em;

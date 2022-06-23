@@ -45,7 +45,7 @@ export default function Header() {
           <Link to='/' replace><img className='Header-navBar-imgTV' src={tv} alt="tv" /></Link>
           </li>
           <li>
-            <h1><Link to='/' replace>Assisto Séries</Link></h1>
+            <h1 className='Header-navBar-titulo'><Link to='/' replace>Assisto Séries</Link></h1>
           </li>
           <li onClick={abreCampoPesquisa}>
             <img className='Header-navBar-imgPesquisar' src={pesquisar} alt="lupa" />

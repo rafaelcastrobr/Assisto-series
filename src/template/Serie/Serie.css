@@ -1,2 +1,94 @@
+@media (max-width: 700px) {
 
-    
+  .Serie-dados-agrupamento {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .Serie-image {
+    height: 15em !important;
+
+  }
+
+}
+
+
+.Serie-image {
+  position: absolute;
+  opacity: 0.3;
+  z-index: -1;
+  height: 10em;
+  width: 100%;
+  overflow: hidden;
+  top: 0;
+  bottom: 0;
+
+}
+
+.Serie-image>img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  filter: blur(1.5px)
+}
+
+.Serie-dados {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2em;
+}
+
+.Serie-dados-agrupamento {
+  display: flex;
+  justify-content: center;
+  padding: 1em;
+}
+
+.Serie-dados-image {
+  border-radius: 10px;
+}
+
+.Serie-dados-box-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Serie-dados-numero-temporada {
+  color: #E83151;
+  margin: 1em 0 1em 0;
+  text-align: center;
+
+}
+
+.Serie-dados-titulo {
+  color: #FEFF67;
+  text-shadow: #000 -2px -2px
+}
+
+.Serie-dados-sinopse {
+  text-align: center;
+  padding: 0 3em 0 3em;
+}
+
+.Serie-apiDados-agrupamento {
+  padding: 1em;
+}
+
+.Serie-apiDados-agrupamento>details {
+  margin-bottom: 1em;
+  width: 70%;
+
+}
+
+.Serie-apiDados-agrupamento>details>summary {
+  cursor: pointer;
+  background-color: #bdbd34;
+  border-radius: 10px;
+  padding: 0.5em;
+}
+
+.Serie-apiDados-agrupamento>details>p {
+  margin-top: 1em;
+}
