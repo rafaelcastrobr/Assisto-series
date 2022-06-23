@@ -9,6 +9,10 @@
   text-align: center;
 }
 
+.Search-unidade > a > img {
+  border-radius: 10px;
+}
+
 
 .Search-unidade > a{
   text-decoration: none;

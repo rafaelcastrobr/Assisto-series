@@ -10,8 +10,8 @@ export default function Search() {
 
   const img = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'
 
-  function oi(id) {
-    console.log(id)
+  function atualiza(id) {
+    dispatch({type: 'ATUA'})
   }
 
   return (
@@ -20,7 +20,7 @@ export default function Search() {
       {apiDados.map(apiDado => {
         return (
           
-            <div className="Search-unidade">
+            <div className="Search-unidade" onClick={atualiza}>
               <Link to={`/serie/${apiDado.id}`} >
                 {apiDado.poster_path === null ? (
                   <img src={img} style={{ width: '92px' }} alt='poster' />
