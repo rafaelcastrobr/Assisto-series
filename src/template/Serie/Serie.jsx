@@ -1,18 +1,26 @@
+import './Serie.css'
+import '../../assets/style/loading.css'
+
 import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { ContentContext } from "../../context/ContentProvider"
 
 
+
 export default function Serie() {
   const { state: { apiTemporadas }, dispatch } = useContext(ContentContext)
 
   const [dados, setDados] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const { id } = useParams()
 
   useEffect(() => {
-    serieApi()
+    setTimeout(() => {
+      serieApi()
+      setLoading(false)
+    }, 1000);
   }, [id]);
 
   function serieApi() {
@@ -27,8 +35,8 @@ export default function Serie() {
           poster: `https://image.tmdb.org/t/p/w92${poster_path}`,
           sinopse: overview,
         })
-
         serieTemporada(number_of_seasons)
+        
       })
 
   }
@@ -40,20 +48,20 @@ export default function Serie() {
     for (let i = 1; i <= number_of_seasons; i++) {
       axios.get(`https://api.themoviedb.org/3/tv/${id}/season/${i}?api_key=${process.env.REACT_APP_LKA_KEY}&language=pt-BR`)
         .then(resp => {
-          
+
 
           const { episodes, season_number } = resp.data
-          
+
           temporadas.push({
-              episodes,
-              season_number
-            }
+            episodes,
+            season_number
+          }
           )
-          
+
           dispatch({ type: 'ATUALIZA_TEMP', payload: temporadas })
         })
-        
-        console.log(temporadas)
+
+      console.log(temporadas)
     }
 
   }
@@ -61,28 +69,34 @@ export default function Serie() {
 
   return (
     <>
+      
       <div>
+        {loading && <span class="loader"></span>}
+        
         <img src={dados.poster} alt="" />
         <h1>{dados.titulo}</h1>
         <p>{dados.sinopse}</p>
 
         {console.log(apiTemporadas)}
+
         {apiTemporadas.map(temporada => {
           return (
             <>
+              <details>
+                <summary>Temporadas: {temporada.season_number}</summary>
 
-              <h3>Temporadas: {temporada.season_number}</h3>
-
-              {temporada.episodes.map(ep => {
-                return (
-                  <>
-                    <p>{ep.episode_number} - {ep.name}</p>
-                  </>
-                )
-              })}
+                {temporada.episodes.map(ep => {
+                  return (
+                    <>
+                      <p>{ep.episode_number} - {ep.name}</p>
+                    </>
+                  )
+                })}
+              </details>
             </>
           )
         })}
+
 
       </div>
     </>

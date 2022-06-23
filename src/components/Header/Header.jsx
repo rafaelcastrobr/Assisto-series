@@ -42,7 +42,7 @@ export default function Header() {
       <div className='Header-navBar'>
         <ul>
           <li>
-            <img className='Header-navBar-imgTV' src={tv} alt="tv" />
+          <Link to='/' replace><img className='Header-navBar-imgTV' src={tv} alt="tv" /></Link>
           </li>
           <li>
             <h1><Link to='/' replace>Assisto Séries</Link></h1>
