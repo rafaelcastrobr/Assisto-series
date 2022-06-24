@@ -1,6 +1,8 @@
 .Header-navBar {
   padding: 1em 2em 1em 1em;
-  background-color: #235355
+  background-color: #0b2230;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .Header-navBar > ul {
@@ -20,10 +22,10 @@
 }
 
 .Header-navBar-titulo > a{
-
+  font-family: Fjalla;
   color: #d9da7d;
-  text-shadow:#000 -2px -2px;
-  font-size: 1em;
+  text-shadow:#000 -1px -1px;
+  font-size: 0.9em;
 }
 
 

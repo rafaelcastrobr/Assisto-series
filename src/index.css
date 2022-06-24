@@ -4,11 +4,20 @@
   
 }
 
+@font-face {
+  font-family: 'Fjalla';
+  src: url(./assets/fonts/FjallaOne-Regular.ttf);
+}
+
+@font-face {
+  font-family: 'Cabin' ;
+  src: url(./assets/fonts/Cabin-Regular.ttf);
+}
+
 body {
 
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Cabin', 'Courier New', Courier, monospace;
+  
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 

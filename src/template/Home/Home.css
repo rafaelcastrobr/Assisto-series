@@ -1,0 +1,19 @@
+.Home-container {
+  display: flex;
+  overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.Home-populares {
+  margin: 1em 0.5em 1em 1em;
+  text-align: center;
+}
+
+.Home-populares > a > img {
+  border-radius: 10px;
+}
+
+.Home-populares > a{
+  text-decoration: none;
+}

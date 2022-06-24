@@ -54,7 +54,7 @@ export default function Header() {
       </div>
       {CampoPesquisa &&
         <div className='Header-pesquisa'>
-          <input type="text" value={titulo}  onChange={escreveTitulo} onKeyPress={pesquisaSerie}/>
+          <input type="text" value={titulo} onChange={escreveTitulo} onKeyPress={pesquisaSerie}/>
         </div>
       }
 

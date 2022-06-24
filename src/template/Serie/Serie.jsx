@@ -26,25 +26,36 @@ export default function Serie() {
 
   function arrumaData(dataApi) {
     const data = new Date(dataApi)
-    return data.toLocaleDateString('pt-BR', {timeZone: 'UTC'})
+    return data.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
   }
 
   function organizaGenero(dataApi) {
     const genero = []
 
     dataApi.map(gen => {
-      return genero.push(gen.name) 
+      return genero.push(gen.name)
     })
 
     return genero.join(' - ')
   }
 
+  function corrigeStatus(dataApi) {
+    switch (dataApi) {
+      case 'Ended':
+        return 'Finalizada'
+      case 'Canceled':
+        return 'Cancelada'
+      case 'Returning Series':
+        return 'Em Exibição'
+    }
+  }
+
   async function serieApi() {
     await axios.get(`https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.REACT_APP_LKA_KEY}&language=pt-BR`)
       .then(resp => {
-        const { name, poster_path, overview, number_of_seasons, backdrop_path, first_air_date, genres } = resp.data
+        const { name, poster_path, overview, number_of_seasons, backdrop_path, first_air_date, genres, status } = resp.data
 
-        console.log(resp.data)
+        //console.log(resp.data)
         setDados({
           id,
           titulo: name,
@@ -52,8 +63,9 @@ export default function Serie() {
           capa_fundo: `https://image.tmdb.org/t/p/w1280${backdrop_path}`,
           temporada: number_of_seasons,
           sinopse: overview,
-          data_inicio: arrumaData(first_air_date),
+          data_inicio: arrumaData(first_air_date).slice(-4),
           generos: organizaGenero(genres),
+          status: corrigeStatus(status)
         })
 
         serieTemporada(number_of_seasons)
@@ -73,14 +85,16 @@ export default function Serie() {
 
           //console.log(resp.data)
           const { episodes, season_number } = resp.data
+          const numEps = +episodes.length
 
           temporadas.push({
             episodes: episodes.slice(0).reverse(),
             season_number,
+            numero_ep: numEps
           })
 
           dispatch({ type: 'ATUALIZA_TEMP', payload: temporadas.slice(0).reverse() })
-          //console.log(temporadas)
+          //console.log(temporadas.numero_ep)
         })
 
     }
@@ -103,32 +117,32 @@ export default function Serie() {
 
           <div className='Serie-dados-box-content'>
             <h1 className='Serie-dados-titulo'>{dados.titulo}</h1>
-            <p className='Serie-dados-numero-temporada'>
-              {exibir && `
-                ${dados.temporada} ${dados.temporada > 1 ? 'Temporadas' : 'Temporada'} | 
-                ${dados.data_inicio} | 
+            <div className='Serie-dados-numero-temporada'>
+              <p><strong>{exibir && `
+                ${dados.data_inicio} | Status: ${dados.status}`
+              }</strong></p>
+              <p>{exibir && `
                 ${dados.generos}
-              `}
-            </p>
+              `}</p>
+            </div>
 
             <p className='Serie-dados-sinopse'>{dados.sinopse}</p>
           </div>
         </div>
 
 
-        {console.log(apiTemporadas)}
         <div className='Serie-apiDados-agrupamento'>
           {apiTemporadas.map(temporada => {
             return (
               <>
                 <details>
-                  <summary>Temporada: {temporada.season_number}</summary>
+                  <summary>{`Temporada: ${temporada.season_number} - ${temporada.numero_ep > 1 ? 'Episódios:' : 'Episódio:'} ${temporada.numero_ep}`}</summary>
 
                   {temporada.episodes.map(ep => {
                     const data_ep = arrumaData(ep.air_date)
                     return (
                       <>
-                        <p>{ep.episode_number} - {ep.name} - <span style={{color: '#931026'}}>{data_ep}</span></p>
+                        <p>{ep.episode_number} - {ep.name} - <span style={{ color: '#931026' }}>{data_ep}</span></p>
                       </>
                     )
                   })}
