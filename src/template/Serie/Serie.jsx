@@ -33,14 +33,14 @@ export default function Serie() {
     const genero = []
 
     dataApi.map(gen => {
-      genero.push(gen.name) 
+      return genero.push(gen.name) 
     })
 
     return genero.join(' - ')
   }
 
-  function serieApi() {
-    axios.get(`https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.REACT_APP_LKA_KEY}&language=pt-BR`)
+  async function serieApi() {
+    await axios.get(`https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.REACT_APP_LKA_KEY}&language=pt-BR`)
       .then(resp => {
         const { name, poster_path, overview, number_of_seasons, backdrop_path, first_air_date, genres } = resp.data
 
@@ -63,12 +63,12 @@ export default function Serie() {
   }
 
 
-  function serieTemporada(number_of_seasons) {
+  async function serieTemporada(number_of_seasons) {
     const temporadas = []
 
 
     for (let i = 1; i <= number_of_seasons; i++) {
-      axios.get(`https://api.themoviedb.org/3/tv/${id}/season/${i}?api_key=${process.env.REACT_APP_LKA_KEY}&language=pt-BR`)
+      await axios.get(`https://api.themoviedb.org/3/tv/${id}/season/${i}?api_key=${process.env.REACT_APP_LKA_KEY}&language=pt-BR`)
         .then(resp => {
 
           //console.log(resp.data)

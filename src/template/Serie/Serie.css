@@ -11,6 +11,10 @@
 
   }
 
+  .Serie-apiDados-agrupamento>details {
+    width: 70% !important;
+  }
+
 }
 
 
@@ -63,8 +67,9 @@
 }
 
 .Serie-dados-titulo {
-  color: #FEFF67;
-  text-shadow: #000 -2px -2px
+  color: #d9da7d;
+  text-shadow: #000 -2px -2px;
+  text-align: center
 }
 
 .Serie-dados-sinopse {
@@ -78,13 +83,14 @@
 
 .Serie-apiDados-agrupamento>details {
   margin-bottom: 1em;
-  width: 70%;
+  width: 25em;
 
 }
 
 .Serie-apiDados-agrupamento>details>summary {
   cursor: pointer;
-  background-color: #bdbd34;
+
+  background-color: #d1b75a;
   border-radius: 10px;
   padding: 0.5em;
 }
