@@ -7,7 +7,7 @@ import { ContentContext } from "../../context/ContentProvider"
 
 
 export default function Search() {
-  const { state: { titulo, apiDados }, dispatch } = useContext(ContentContext)
+  const { state: { apiDados } } = useContext(ContentContext)
   const [loading, setLoading] = useState(true)
 
 

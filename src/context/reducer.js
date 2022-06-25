@@ -1,6 +1,7 @@
 
 export const INITIAL_STATE = {
   apiDados: [],
+  apiSerie: [],
   apiTemporadas: [],
   titulo: ''
 }
@@ -22,6 +23,14 @@ export function reducer(state, action) {
       newState.apiDados = action.payload
       newState.titulo = ''
       newState.apiTemporadas = []
+      newState.apiSerie = []
+
+      return newState
+    }
+    case 'ATUALIZA_SERIE': {
+      const newState = { ...state }
+
+      newState.apiSerie = action.payload
 
       return newState
     }
