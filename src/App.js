@@ -22,6 +22,7 @@ function App() {
           <Route path='/' element={ <Home />} />
           <Route path='/search/:titulo' element={ <Search />} />
           <Route path='/serie/:id' element={ <Serie />} />
+          <Route path='*' element={<Home />} />
         </Routes>
       </Router>
         
