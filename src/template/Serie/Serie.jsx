@@ -22,7 +22,7 @@ export default function Serie() {
       setLoading(false)
       setExibir(true)
     }, 1000);
-  }, [id]);
+  }, [id, loading]);
 
   function arrumaData(dataApi) {
     const data = new Date(dataApi)
