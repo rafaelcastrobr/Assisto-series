@@ -6,7 +6,7 @@ import ContentProvider from './context/ContentProvider';
 import Home from './template/Home/Home';
 import Serie from './template/Serie/Serie';
 
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { HashRouter, Route, Routes } from 'react-router-dom'
 
 function App() {
 
@@ -16,7 +16,7 @@ function App() {
     <div className='container'>
       <ContentProvider>
 
-      <Router>
+      <HashRouter basename="/">
         <Header />
         <Routes>
           <Route path='/' element={ <Home />} />
@@ -24,7 +24,7 @@ function App() {
           <Route path='/serie/:id' element={ <Serie />} />
           <Route path='*' element={<Home />} />
         </Routes>
-      </Router>
+      </HashRouter>
         
         
       </ContentProvider>
