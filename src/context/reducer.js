@@ -17,6 +17,14 @@ export function reducer(state, action) {
 
       return newState
     }
+    case 'RESETA_PAGE': {
+      const newState = { ...state }
+
+      newState.apiTemporadas = []
+      newState.apiSerie = []
+
+      return newState
+    }
     case 'API_DADOS': {
       const newState = { ...state }
 

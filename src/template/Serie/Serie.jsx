@@ -9,21 +9,36 @@ import { ContentContext } from "../../context/ContentProvider"
 
 export default function Serie() {
   const { state: { apiTemporadas, apiSerie }, dispatch } = useContext(ContentContext)
-  //console.log('apiSerie: ', apiSerie);
 
-  //const [dados, setDados] = useState([])
   const [loading, setLoading] = useState(true)
-  const [exibir, setExibir] = useState(false)
-
+  const [exibirEpAdicionar, setExibirEpAdicionar] = useState(false)
+  const [adicionado, setAdicionado] = useState(false)
   const { id } = useParams()
 
   useEffect(() => {
+
+    dispatch({ type: 'RESETA_PAGE' })
+
     setTimeout(() => {
       serieApi()
+      buscaSerieId()
       setLoading(false)
-      setExibir(true)
     }, 1000);
+    // eslint-disable-next-line
   }, [id]);
+
+
+  function buscaSerieId() {
+    if (localStorage.getItem('MINHA_SERIE')) {
+      const series = JSON.parse(localStorage.getItem('MINHA_SERIE'))
+      series.forEach(serie => {
+        if (serie.id === id) {
+          setAdicionado(true)
+          //setExibirEpAdicionar(true)
+        }
+      })
+    }
+  }
 
   function arrumaData(dataApi) {
     const data = new Date(dataApi)
@@ -48,18 +63,18 @@ export default function Serie() {
         return 'Cancelada'
       case 'Returning Series':
         return 'Em Exibição'
+      default:
+        return '-'
     }
   }
 
   async function serieApi() {
 
-
-
     await axios.get(`https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.REACT_APP_LKA_KEY}&language=pt-BR`)
       .then(resp => {
-        const { name, poster_path, overview, number_of_seasons, last_episode_to_air, backdrop_path, first_air_date, genres, status, networks, episode_run_time } = resp.data
+        const { name, poster_path, overview, number_of_seasons, last_air_date, backdrop_path, first_air_date, genres, status, networks, episode_run_time } = resp.data
 
-        //console.log(resp.data)
+        console.log(resp.data)
         const dadosSerieApi = [{
           id,
           titulo: name,
@@ -72,7 +87,7 @@ export default function Serie() {
           status: corrigeStatus(status),
           canal: organizaArray(networks),
           tempo: episode_run_time,
-          ultimo_ep: last_episode_to_air
+          ultimo_ep: arrumaData(last_air_date)
         }]
 
         serieTemporada(number_of_seasons)
@@ -83,19 +98,40 @@ export default function Serie() {
 
   }
 
-  function adicionarFilmeNaLista() {
+  function adicionarSerieNaLista() {
+    setAdicionado(true)
 
-    const ep_n = apiSerie[0].ultimo_ep.episode_number
-    const s_n = apiSerie[0].ultimo_ep.season_number
+    if (adicionado) return
+
+    setExibirEpAdicionar(true)
+    console.log(apiTemporadas)
+    
+    function separaEp() {
+      const temp = []
+      apiTemporadas.map(temporada => {
+        temp.push({
+          temporada: temporada.season_number,
+          episodios: temporada.episodes.map(ep => {
+            return {
+              num: ep.episode_number,
+              id: ep.id,
+              checkIn: false,
+            }
+
+          })
+        })
+      })
+      return temp
+    }
+
+    //temp_ep: separaEp()
 
     const dados = {
       id: apiSerie[0].id,
       titulo: apiSerie[0].titulo,
       poster: apiSerie[0].poster,
-      ultimo_ep: `${s_n}x${ep_n}`,
-
     }
-    //console.log(apiSerie)
+    //console.log(dados)
     if (localStorage.getItem('MINHA_SERIE') === null) {
       localStorage.setItem('MINHA_SERIE', JSON.stringify([dados]))
     }
@@ -107,6 +143,66 @@ export default function Serie() {
     }
   }
 
+  function removerSerieDaLista() {
+
+    const series = JSON.parse(localStorage.getItem('MINHA_SERIE'))
+    series.forEach(serie => {
+      if (serie.id === id) (
+        setAdicionado(false)
+      )
+    })
+
+    setExibirEpAdicionar(false)
+
+    const dadosDelet = series.filter(serie => id !== serie.id)
+
+    localStorage.setItem('MINHA_SERIE', JSON.stringify(dadosDelet))
+
+  }
+
+  /*
+  function adicioneiEp(e) {
+    const series = JSON.parse(localStorage.getItem('MINHA_SERIE'))
+    series.map(serie => {
+      serie.temp_ep.map(epi => {
+        const epClicado = epi.episodios.filter(ep => +ep.id === +e.target.value)
+        epClicado.map(ep => {
+          if (ep.checkIn === true) {
+            return ep.checkIn = false
+          } else {
+            return ep.checkIn = true
+          }
+        })
+        //var obj = epNaoClicado.concat(epClicado)
+        //console.log(series)
+
+        localStorage.setItem('MINHA_SERIE', JSON.stringify(series))
+
+      })
+    })
+  }
+
+  function epCheck() {
+
+    const series = JSON.parse(localStorage.getItem('MINHA_SERIE'))
+ 
+    const check = series.map(serie => {
+      serie.temp_ep.map(epi => {
+        epi.episodios.map(ep => {
+          if(ep.checkIn === true) {
+            return true
+
+          }
+          else {
+            return false
+          }
+        })
+      })
+    })
+
+    return check
+  }
+*/
 
   async function serieTemporada(number_of_seasons) {
     const temporadas = []
@@ -116,7 +212,7 @@ export default function Serie() {
       await axios.get(`https://api.themoviedb.org/3/tv/${id}/season/${i}?api_key=${process.env.REACT_APP_LKA_KEY}&language=pt-BR`)
         .then(resp => {
 
-          console.log(resp.data)
+          //console.log(resp.data)
           const { episodes, season_number } = resp.data
           const numEps = +episodes.length
 
@@ -129,14 +225,13 @@ export default function Serie() {
           dispatch({ type: 'ATUALIZA_TEMP', payload: temporadas.slice(0).reverse() })
           //console.log(temporadas.numero_ep)
         })
-
     }
-
   }
 
 
   return (
     <>
+      <div className='loading-class'>{loading && <span class="loader"></span>}</div>
       {apiSerie.map(serie => {
         return (
           <>
@@ -146,18 +241,21 @@ export default function Serie() {
               </div>
 
               <div className='Serie-dados'>
-                {loading && <span class="loader"></span>}
+
                 <div className='Serie-dados-agrupamento'>
-                  <div>
-                    <img className='Serie-dados-image' src={`https://image.tmdb.org/t/p/w154${serie.poster}`} alt="" />
-                    <button onClick={adicionarFilmeNaLista}>ADICIONAR</button>
+                  <div className='Serie-dados-poster-btn'>
+                    <img className='Serie-dados-poster' src={`https://image.tmdb.org/t/p/w154${serie.poster}`} alt="" />
+                    {adicionado ?
+                      <button className='Serie-dados-btn RemoverSerie' onClick={removerSerieDaLista}>Remover Série</button>
+                      :
+                      <button className='Serie-dados-btn AdicionarSerie' onClick={adicionarSerieNaLista}>Adicionar Série</button>}
                   </div>
 
                   <div className='Serie-dados-box-content'>
                     <h1 className='Serie-dados-titulo'>{`${serie.titulo} (${serie.data_inicio})`}</h1>
                     <div className='Serie-dados-numero-temporada'>
-                      <p style={{ color: '#b6283f' }}><strong>{exibir && `Status: ${serie.status} | ${serie.generos}`}</strong></p>
-                      <p><strong>{exibir && `${serie.canal} `}{+serie.tempo.length !== 0 ? `| ${serie.tempo}min` : ''}</strong></p>
+                      <p style={{ color: '#b6283f' }}><strong>{`Status: ${serie.status} | ${serie.generos}`}</strong></p>
+                      <p><strong>{`${serie.canal} `}{+serie.tempo.length !== 0 ? `| ${serie.tempo}min` : ''}</strong></p>
                     </div>
                     <p className='Serie-dados-sinopse'>{serie.sinopse}</p>
                   </div>

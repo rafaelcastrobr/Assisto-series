@@ -49,8 +49,31 @@
   padding: 1em;
 }
 
-.Serie-dados-image {
+.Serie-dados-poster-btn {
+  display: flex;
+  flex-direction: column;
+}
+
+.Serie-dados-poster {
   border-radius: 10px;
+}
+
+.Serie-dados-btn {
+  margin: 1em 0 1em 0;
+  padding: 0.5em;
+  font-family: 'Cabin';
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.AdicionarSerie {
+  background-color: #415305;
+}
+
+.RemoverSerie {
+  background-color: rgb(114, 26, 26);
 }
 
 .Serie-dados-box-content {

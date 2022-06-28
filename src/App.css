@@ -5,3 +5,9 @@ https://coolors.co/palette/902ee5-2b0949-3ab9f8-045076-feff67-88f399-095d17-e831
 p {
   color: aliceblue;
 }
+
+.loading-class {
+  display: flex;
+  justify-content: center;
+  height: auto;
+}

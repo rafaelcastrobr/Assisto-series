@@ -1,19 +1,31 @@
 .Home-container {
   display: flex;
-  overflow-x: scroll;
-    overflow-y: hidden;
-    white-space: nowrap;
+  overflow-y: hidden;
 }
 
 .Home-populares {
-  margin: 1em 0.5em 1em 1em;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center !important;
+  align-items: center;
+  margin: 1em 0.5em 1em 0.5em;
+  width: 120px;
 }
 
 .Home-populares > a > img {
   border-radius: 10px;
 }
 
-.Home-populares > a{
+.Home-populares > a {
   text-decoration: none;
+}
+
+.Home-minhas-series {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, auto));
+}
+
+.Home-titulos {
+  color: #d9da7d;
+  padding: 0.5em;
 }

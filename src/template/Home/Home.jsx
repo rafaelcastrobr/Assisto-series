@@ -37,7 +37,7 @@ export default function Home() {
 
   return (
     <>
-    <h2>Populares</h2>
+    <h2 className="Home-titulos">Populares</h2>
     <div className="Home-container">
       {state.map(dados => {
         return (
@@ -60,9 +60,10 @@ export default function Home() {
         )
       })}
       </div>
+      
       <div>
-        <h2>Minhas Séries</h2>
-        <div className="Home-container">
+        {dadosApiMinhaSerie.length > 0 && <h2 className="Home-titulos">Minha Lista</h2>}
+        <div className="Home-minhas-series">
       {dadosApiMinhaSerie.map(dados => {
         return (
           <>
@@ -80,7 +81,6 @@ export default function Home() {
 
               </Link>
               <p>{dados.titulo}</p>
-              <p>{dados.ultimo_ep}</p>
             </div>
 
           </>
