@@ -13,7 +13,7 @@ export default function Serie() {
   const [loading, setLoading] = useState(true)
   const [exibirEpAdicionar, setExibirEpAdicionar] = useState(false)
   const [adicionado, setAdicionado] = useState(false)
-  const [epCheked, setEpChecked] = useState(false)
+  const [epChecked, setEpChecked] = useState(false)
   const { id } = useParams()
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function Serie() {
         if (serie.id === id) {
           setAdicionado(true)
           setExibirEpAdicionar(true)
-          
+
         }
       })
     }
@@ -107,7 +107,7 @@ export default function Serie() {
 
     setExibirEpAdicionar(true)
     //console.log(apiTemporadas)
-    
+
     function separaEp() {
       const temp = []
       apiTemporadas.map(temporada => {
@@ -130,7 +130,10 @@ export default function Serie() {
       id: apiSerie[0].id,
       titulo: apiSerie[0].titulo,
       poster: apiSerie[0].poster,
-      eps: []
+      eps: {
+        idTemps: [],
+        idEps: []
+      }
     }
 
     //console.log(dados)
@@ -162,36 +165,6 @@ export default function Serie() {
 
   }
 
-  
-  function adicioneiEp(e) {
-    
-    const series = JSON.parse(localStorage.getItem('MINHA_SERIE'))
-    series.map(serie => {
-      serie.eps.push(e.target.value)
-    })
-    console.log(series)
-
-    localStorage.setItem('MINHA_SERIE', JSON.stringify(series))
-
-  }
-
-  function epCheck(epId) {
-
-    const series = JSON.parse(localStorage.getItem('MINHA_SERIE'))
- 
-    const check = series.map(serie => {
-      serie.eps.map(epi => {
-       if(+epi === +epId) {
-        return true
-        //console.log(epi, epId)
-       }
-      })
-    })
-
-    return check
-  }
-
-
   async function serieTemporada(number_of_seasons) {
     const temporadas = []
 
@@ -201,19 +174,54 @@ export default function Serie() {
         .then(resp => {
 
           //console.log(resp.data)
-          const { episodes, season_number } = resp.data
+          const { episodes, season_number, id } = resp.data
           const numEps = +episodes.length
 
           temporadas.push({
             episodes: episodes.slice(0).reverse(),
             season_number,
-            numero_ep: numEps
+            numero_ep: numEps,
+            id
           })
+
 
           dispatch({ type: 'ATUALIZA_TEMP', payload: temporadas.slice(0).reverse() })
           //console.log(temporadas.numero_ep)
         })
     }
+  }
+
+  //id_episodio, id_temporada
+  function adicioneiEp(e) {
+    const id_episodio = e.target.attributes.idEp.value
+    const id_temporada = e.target.attributes.idTemp.value
+
+    const series = JSON.parse(localStorage.getItem('MINHA_SERIE'))
+    series.map(serie => {
+      serie.eps.idEps.push(id_episodio)
+      serie.eps.idTemps.push(id_temporada)
+    })
+
+    //console.log(series)
+
+    localStorage.setItem('MINHA_SERIE', JSON.stringify(series))
+
+  }
+
+  function epCheck(id_episodio, id_temporada) {
+    let check;
+    const series = JSON.parse(localStorage.getItem('MINHA_SERIE'))
+    series.map(serie => {
+      serie.eps.idTemps.map(idTemp => {
+        serie.eps.idEps.map(idEp => {
+          if (+idEp === +id_episodio && +idTemp === +id_temporada) {
+            return check = true
+          }
+        })
+      })
+    })
+
+    return check
   }
 
 
@@ -258,16 +266,18 @@ export default function Serie() {
         {apiTemporadas.map(temporada => {
           return (
             <>
-              <details>
-                <summary>{`Temporada: ${temporada.season_number} - ${temporada.numero_ep > 1 ? 'Episódios:' : 'Episódio:'} ${temporada.numero_ep}`}</summary>
+              <details id={temporada.id}>
+                <summary >{`Temporada: ${temporada.season_number} - ${temporada.numero_ep > 1 ? 'Episódios:' : 'Episódio:'} ${temporada.numero_ep} - ${temporada.id}`}</summary>
 
                 {temporada.episodes.map(ep => {
+
                   const data_ep = arrumaData(ep.air_date)
                   return (
                     <>
-                      <p>{ep.episode_number} - {ep.name} - <span style={{ color: '#b6283f' }}>{data_ep}</span>
-                      
-                      {exibirEpAdicionar && <input value={ep.id} defaultChecked={epCheck(ep.id)} type="checkbox" onChange={adicioneiEp}/>}
+                      <p>
+                        {ep.episode_number} - {ep.name} <span style={{ color: '#b6283f' }}>{data_ep}</span>
+                        {exibirEpAdicionar && <input className='checkinpu' idEp={ep.id} idTemp={temporada.id} defaultChecked={epCheck(ep.id, temporada.id)} type="checkbox" onChange={adicioneiEp} /> }
+                        
                       </p>
                     </>
                   )
