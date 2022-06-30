@@ -120,3 +120,17 @@
 .Serie-apiDados-agrupamento>details>p {
   margin-top: 1em;
 }
+
+.inputchecktrue {
+  width: 10px;
+  height: 10px;
+  background-color: green;
+  cursor: pointer;
+}
+
+.inputcheckfalse {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  cursor: pointer;
+}

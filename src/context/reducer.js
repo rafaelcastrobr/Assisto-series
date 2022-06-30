@@ -3,7 +3,8 @@ export const INITIAL_STATE = {
   apiDados: [],
   apiSerie: [],
   apiTemporadas: [],
-  titulo: ''
+  titulo: '',
+  epChecked: false
 }
 
 
@@ -46,6 +47,13 @@ export function reducer(state, action) {
       const newState = { ...state }
 
       newState.apiTemporadas = action.payload
+
+      return newState
+    }
+    case 'ATUALIZA_CHECK': {
+      const newState = { ...state }
+
+      newState.epChecked = action.payload
 
       return newState
     }
