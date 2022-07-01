@@ -104,6 +104,21 @@
   padding: 1em;
 }
 
+.Serie-apiDados-agrupamento-BotaoAdcTemporadaInteira {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1em;
+}
+
+.Serie-apiDados-agrupamento-BotaoAdcTemporadaInteira > button {
+  border: none;
+  padding: 0.2em;
+  border-radius: 5px;
+  background-color: rgb(114, 26, 26);
+  color: white;
+  cursor: pointer;
+}
+
 .Serie-apiDados-agrupamento>details {
   margin-bottom: 1em;
   width: 25em;
@@ -117,20 +132,23 @@
   padding: 0.5em;
 }
 
-.Serie-apiDados-agrupamento>details>p {
+.Serie-apiDados-agrupamento-ep {
   margin-top: 1em;
+  display: flex;
+  justify-content: space-between;
 }
 
 .inputchecktrue {
-  width: 10px;
-  height: 10px;
-  background-color: green;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
   cursor: pointer;
 }
 
 .inputcheckfalse {
-  width: 10px;
-  height: 10px;
-  background-color: red;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
   cursor: pointer;
 }
+

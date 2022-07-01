@@ -8,12 +8,13 @@ import { ContentContext } from "../../context/ContentProvider"
 
 
 export default function Serie() {
-  const { state: { apiTemporadas, apiSerie }, dispatch } = useContext(ContentContext)
+  const { state: { apiTemporadas, epChecked, apiSerie }, dispatch } = useContext(ContentContext)
 
   const [loading, setLoading] = useState(true)
   const [exibirEpAdicionar, setExibirEpAdicionar] = useState(false)
   const [adicionado, setAdicionado] = useState(false)
-  const [epChecked, setEpChecked] = useState(false)
+  const [botaoAdcTemporadaCompleta, setBotaoAdcTemporadaCompleta] = useState(false)
+  //const [epChecked, setEpChecked] = useState(false)
   const { id } = useParams()
 
   useEffect(() => {
@@ -24,9 +25,23 @@ export default function Serie() {
       serieApi()
       buscaSerieId()
       setLoading(false)
+
     }, 1000);
     // eslint-disable-next-line
   }, [id]);
+
+  function buscaTemporadaBotao(temporada_id) {
+    let check = false
+    const series = JSON.parse(localStorage.getItem('MINHA_SERIE'))
+    series.map(serie => {
+      serie.temporadas.map(temp_id => {
+        if (+temp_id === +temporada_id) {
+          return check = true
+        }
+      })
+    })
+    return check
+  }
 
 
   function buscaSerieId() {
@@ -108,32 +123,13 @@ export default function Serie() {
     setExibirEpAdicionar(true)
     //console.log(apiTemporadas)
 
-    function separaEp() {
-      const temp = []
-      apiTemporadas.map(temporada => {
-        temp.push({
-          temporada: temporada.season_number,
-          episodios: temporada.episodes.map(ep => {
-            return {
-              num: ep.episode_number,
-              id: ep.id,
-              checkIn: false,
-            }
-
-          })
-        })
-      })
-      return temp
-    }
-
     const dados = {
       id: apiSerie[0].id,
       titulo: apiSerie[0].titulo,
       poster: apiSerie[0].poster,
-      eps: {
-        idTemps: [],
-        idEps: []
-      }
+      eps: [],
+      ultimo_ep_visto: [],
+      temporadas: []
     }
 
     //console.log(dados)
@@ -174,57 +170,125 @@ export default function Serie() {
         .then(resp => {
 
           //console.log(resp.data)
-          const { episodes, season_number, id } = resp.data
+          const { episodes, season_number, id, air_date } = resp.data
           const numEps = +episodes.length
 
           temporadas.push({
             episodes: episodes.slice(0).reverse(),
             season_number,
             numero_ep: numEps,
-            id
+            id,
+            data_temp: arrumaData(air_date).slice(-4)
           })
 
           dispatch({ type: 'ATUALIZA_TEMP', payload: temporadas.slice(0).reverse() })
-          //console.log(temporadas.numero_ep)
         })
     }
   }
 
-  //id_episodio, id_temporada
-  function adicioneiEp(e) {
-    const id_episodio = e.target.attributes.idEp.value
-    const id_temporada = e.target.attributes.idTemp.value
-    //setEpChecked(true)
+  function excluirEp(id_episodio, id_temporada) {
+
     const series = JSON.parse(localStorage.getItem('MINHA_SERIE'))
     series.map(serie => {
-      serie.eps.idEps.push(id_episodio)
-      serie.eps.idTemps.push(id_temporada)
+      if (+serie.id === +id) {
+        dispatch({ type: 'ATUALIZA_CHECK' })
+        const listaAppAtt = serie.eps.filter(ep => +ep !== +id_episodio)
+        const listaTempAtt = serie.temporadas.filter(temporadas => +temporadas !== +id_temporada)
+        serie.temporadas.length = 0
+        serie.temporadas = listaTempAtt
+        serie.eps.length = 0
+        serie.eps = listaAppAtt
+        serie.ultimo_ep_visto = ''
+      }
     })
-
-    //console.log(series)
 
     localStorage.setItem('MINHA_SERIE', JSON.stringify(series))
 
   }
 
-  function epCheck(id_episodio, id_temporada) {
+  function adicioneiEp(id_episodio, num_temporada, num_ep, id_temporada) {
 
     const series = JSON.parse(localStorage.getItem('MINHA_SERIE'))
-    let check;
     series.map(serie => {
-      serie.eps.idEps.map(ep => {
-         if (+ep === +id_episodio) {
-          console.log(ep.id)
-          return check = 'true'
-         }
-      })
+      if (+serie.id === +id) {
+        dispatch({ type: 'ATUALIZA_CHECK' })
+        serie.eps.push(id_episodio)
+
+        apiTemporadas.map(temporadas => {
+          if (+id_temporada === temporadas.id) {
+            const proxEp = +num_ep + 1
+            const proxTemp = +num_temporada + 1
+            //console.log(+temporadas.episodes.length, num_ep, num_temporada)
+
+            if (proxEp <= +temporadas.episodes.length) {
+
+              serie.ultimo_ep_visto = `${num_temporada}x${proxEp}`
+            }
+            if (proxEp > +temporadas.episodes.length && proxTemp <= +apiTemporadas.length) {
+              serie.ultimo_ep_visto = `${proxTemp}x01`
+            }
+
+            if (proxEp > +temporadas.episodes.length && proxTemp > +apiTemporadas.length) {
+              serie.ultimo_ep_visto = `T${proxTemp}..`
+            }
+
+
+
+          }
+        })
+      }
     })
 
+    localStorage.setItem('MINHA_SERIE', JSON.stringify(series))
+  }
+
+  function epCheck(id_episodio) {
+
+    const series = JSON.parse(localStorage.getItem('MINHA_SERIE')) || []
+    let check = false;
+    series.map(serie => {
+      serie.eps.map(ep => {
+        if (+ep === +id_episodio) {
+          return check = true
+        }
+      })
+    })
     return check
   }
 
+  function adcTodosEp(id_temporada) {
+    const todosEp = []
+    const todasTemp = []
+    const series = JSON.parse(localStorage.getItem('MINHA_SERIE'))
 
+    apiTemporadas.map(temporadas => {
+      if (id_temporada === temporadas.id) {
+        todasTemp.push(id_temporada)
+        temporadas.episodes.map(id_ep => {
 
+          dispatch({ type: 'ATUALIZA_CHECK' })
+          //console.log('seri', serie_ep_id, 'ep', id_ep.id)
+          todosEp.push(id_ep.id)
+
+        }
+        )
+      }
+    })
+    //console.log(todosEp)
+
+    series.map(serie => {
+      if (+serie.id === +id) {
+        dispatch({ type: 'ATUALIZA_CHECK' })
+        const episodios = serie.eps
+        const temporadas = serie.temporadas
+        //console.log(todosEp)
+        serie.eps = todosEp.concat(episodios)
+        serie.temporadas = todasTemp.concat(temporadas)
+      }
+    })
+
+    localStorage.setItem('MINHA_SERIE', JSON.stringify(series))
+  }
 
   return (
     <>
@@ -243,16 +307,17 @@ export default function Serie() {
                   <div className='Serie-dados-poster-btn'>
                     <img className='Serie-dados-poster' src={`https://image.tmdb.org/t/p/w154${serie.poster}`} alt="" />
                     {adicionado ?
-                      <button className='Serie-dados-btn RemoverSerie' onClick={removerSerieDaLista}>Remover Série</button>
+                      <button className='Serie-dados-btn RemoverSerie' onClick={removerSerieDaLista}>REMOVER SÉRIE</button>
                       :
-                      <button className='Serie-dados-btn AdicionarSerie' onClick={adicionarSerieNaLista}>Adicionar Série</button>}
+                      <button className='Serie-dados-btn AdicionarSerie' onClick={adicionarSerieNaLista}>ADICIONAR SÉRIE</button>
+                    }
                   </div>
 
                   <div className='Serie-dados-box-content'>
                     <h1 className='Serie-dados-titulo'>{`${serie.titulo} (${serie.data_inicio})`}</h1>
                     <div className='Serie-dados-numero-temporada'>
-                      <p style={{ color: '#b6283f' }}><strong>{`Status: ${serie.status} | ${serie.generos}`}</strong></p>
-                      <p><strong>{`${serie.canal} `}{+serie.tempo.length !== 0 ? `| ${serie.tempo}min` : ''}</strong></p>
+                      <p style={{ color: '#b6283f' }}><strong>{`${serie.generos}`}</strong></p>
+                      <p><strong>{`${serie.canal}`}{+serie.tempo.length !== 0 ? ` | ${serie.tempo}min | ` : ' | '} {`${serie.status}`}</strong></p>
                     </div>
                     <p className='Serie-dados-sinopse'>{serie.sinopse}</p>
                   </div>
@@ -264,22 +329,48 @@ export default function Serie() {
       })}
 
       <div className='Serie-apiDados-agrupamento'>
+
         {apiTemporadas.map(temporada => {
+          const botaoAdcTemporadaCompleta = buscaTemporadaBotao(temporada.id)
+
           return (
             <>
               <details id={temporada.id}>
-                <summary >{`Temporada: ${temporada.season_number} - ${temporada.numero_ep > 1 ? 'Episódios:' : 'Episódio:'} ${temporada.numero_ep} - ${temporada.id}`}</summary>
-
+                <summary >{`Temporada: ${temporada.season_number} - ${temporada.numero_ep > 1 ? 'Episódios:' : 'Episódio:'} ${temporada.numero_ep} - ${temporada.data_temp}`}</summary>
+                <div className='Serie-apiDados-agrupamento-BotaoAdcTemporadaInteira'>
+                  {exibirEpAdicionar && <>
+                    {botaoAdcTemporadaCompleta ? '' :
+                      <button onClick={() => adcTodosEp(temporada.id)}>MARCAR TODA TEMP</button>}
+                  </>}
+                </div>
                 {temporada.episodes.map(ep => {
                   const data_ep = arrumaData(ep.air_date)
-                  //console.log(epCheck(ep.id, temporada.id))
+                  const epChecked = epCheck(ep.id, temporada.id)
+
                   return (
                     <>
-                      <p id={ep.id}>
-                        {ep.episode_number} - {ep.name} - {ep.id} <span style={{ color: '#b6283f' }}>{data_ep}</span>
-                        {exibirEpAdicionar && <input idEp={ep.id} idTemp={temporada.id} checked={epCheck(ep.id, temporada.id) ? true : false} type="checkbox" onChange={adicioneiEp} />}
-                        
-                      </p>
+                      <div className='Serie-apiDados-agrupamento-ep' id={ep.id} >
+                        <p>{ep.episode_number} - {ep.name} <span style={{ color: '#b6283f' }}>{data_ep}</span></p>
+                        {exibirEpAdicionar && <>
+
+                          {epChecked ?
+
+                            <div onClick={() => excluirEp(ep.id, temporada.id)}>
+                              <svg color='green' xmlns="http://www.w3.org/2000/svg" className="inputchecktrue" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                              </svg>
+                            </div>
+                            :
+                            <div onClick={() => adicioneiEp(ep.id, temporada.season_number, ep.episode_number, temporada.id)} >
+
+                              <svg color='gray' xmlns="http://www.w3.org/2000/svg" className="inputcheckfalse" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                              </svg>
+                            </div>
+                          }
+
+                        </>}
+                      </div>
                     </>
                   )
                 })}

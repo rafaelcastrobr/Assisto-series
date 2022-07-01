@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import './Home.css'
+document.title = 'Assisto Série'
 
 
 export default function Home() {
@@ -81,6 +82,8 @@ export default function Home() {
 
               </Link>
               <p>{dados.titulo}</p>
+              {dados.ultimo_ep_visto.length === 0 ? '' :  <p style={{ color: '#b6283f' }}>Prox: {dados.ultimo_ep_visto}</p>}
+             
             </div>
 
           </>
