@@ -32,7 +32,7 @@ export default function Serie() {
 
   function buscaTemporadaBotao(temporada_id) {
     let check = false
-    const series = JSON.parse(localStorage.getItem('MINHA_SERIE'))
+    const series = JSON.parse(localStorage.getItem('MINHA_SERIE')) || []
     series.map(serie => {
       serie.temporadas.map(temp_id => {
         if (+temp_id === +temporada_id) {
