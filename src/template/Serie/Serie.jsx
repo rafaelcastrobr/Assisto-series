@@ -121,14 +121,13 @@ export default function Serie() {
     if (adicionado) return
 
     setExibirEpAdicionar(true)
-    //console.log(apiTemporadas)
 
     const dados = {
       id: apiSerie[0].id,
       titulo: apiSerie[0].titulo,
       poster: apiSerie[0].poster,
       eps: [],
-      ultimo_ep_visto: [],
+      ultimo_ep_visto: '1x1',
       temporadas: []
     }
 
@@ -218,14 +217,13 @@ export default function Serie() {
           if (+id_temporada === temporadas.id) {
             const proxEp = +num_ep + 1
             const proxTemp = +num_temporada + 1
-            //console.log(+temporadas.episodes.length, num_ep, num_temporada)
 
             if (proxEp <= +temporadas.episodes.length) {
 
               serie.ultimo_ep_visto = `${num_temporada}x${proxEp}`
             }
             if (proxEp > +temporadas.episodes.length && proxTemp <= +apiTemporadas.length) {
-              serie.ultimo_ep_visto = `${proxTemp}x01`
+              serie.ultimo_ep_visto = `${proxTemp}x1`
             }
 
             if (proxEp > +temporadas.episodes.length && proxTemp > +apiTemporadas.length) {
@@ -267,7 +265,6 @@ export default function Serie() {
         temporadas.episodes.map(id_ep => {
 
           dispatch({ type: 'ATUALIZA_CHECK' })
-          //console.log('seri', serie_ep_id, 'ep', id_ep.id)
           todosEp.push(id_ep.id)
 
         }
@@ -281,7 +278,6 @@ export default function Serie() {
         dispatch({ type: 'ATUALIZA_CHECK' })
         const episodios = serie.eps
         const temporadas = serie.temporadas
-        //console.log(todosEp)
         serie.eps = todosEp.concat(episodios)
         serie.temporadas = todasTemp.concat(temporadas)
       }
@@ -383,19 +379,3 @@ export default function Serie() {
   )
 
 }
-
-//{exibirEpAdicionar && <input idEp={ep.id} idTemp={temporada.id} checked={} type="checkbox" onChange={adicioneiEp} /> }
-
-
-/*
-
-<>
-                          {epChecked ? <div className='inputchecktrue' idEp={ep.id} idTemp={temporada.id} onClick={adicioneiEp}></div>
-                            :
-                            <div className='inputcheckfalse' idEp={ep.id} idTemp={temporada.id} onClick={adicioneiEp}></div>
-                          } </> : ''
-
-
-
-
-*/
