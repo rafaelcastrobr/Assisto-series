@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ContentContext } from "../../context/ContentProvider";
 import './Home.css'
@@ -15,13 +15,24 @@ export default function Home() {
   useEffect(() => {
     getSeriesPopular()
     pegaDadosApiMinhaSerie()
+
+    // eslint-disable-next-line
   }, []);
 
 
 
   function pegaDadosApiMinhaSerie() {
     if (localStorage.getItem('MINHA_SERIE')) {
+      
       const dados = JSON.parse(localStorage.getItem('MINHA_SERIE'))
+      dados.sort((a, b) => {
+        if(a.titulo < b.titulo) {
+          return -1
+        } else {
+          return true
+        }
+      })
+
       dispatch({ type: 'ATUALIZA_MINHA_LISTA', payload: dados })
     }
   }
