@@ -2,7 +2,9 @@
 export const INITIAL_STATE = {
   apiDados: [],
   apiSerie: [],
+  populares: [],
   apiTemporadas: [],
+  minhas_series: [],
   titulo: '',
   epChecked: false
 }
@@ -24,6 +26,20 @@ export function reducer(state, action) {
       newState.apiTemporadas = []
       newState.apiSerie = []
 
+      return newState
+    }
+    case 'ATUALIZA_HOME': {
+      const newState = { ...state }
+
+      newState.populares = action.payload
+      
+      return newState
+    }
+    case 'ATUALIZA_MINHA_LISTA': {
+      const newState = { ...state }
+      
+      newState.minhas_series = action.payload
+      
       return newState
     }
     case 'API_DADOS': {
