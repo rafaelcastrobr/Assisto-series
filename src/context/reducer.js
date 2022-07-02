@@ -5,6 +5,7 @@ export const INITIAL_STATE = {
   populares: [],
   apiTemporadas: [],
   minhas_series: [],
+  botaoAdcTodasTemp: true,
   ultimoProxEp: {
     ep: '',
     exibir: false
