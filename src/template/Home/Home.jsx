@@ -41,7 +41,7 @@ export default function Home() {
     await axios.get(`https://api.themoviedb.org/3/tv/popular?api_key=${process.env.REACT_APP_LKA_KEY}&language=pt-BR`)
       .then(resp => {
         const dados = resp.data.results
-        dispatch({ type: 'ATUALIZA_HOME', payload: dados })
+        dispatch({ type: 'ATUALIZA_HOME', payload: dados.slice(0, 10) })
       })
   }
 
