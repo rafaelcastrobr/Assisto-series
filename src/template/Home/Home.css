@@ -26,6 +26,23 @@
 }
 
 .Home-titulos {
+  display: flex;
+  align-content: center;
   color: #d9da7d;
   padding: 0.5em;
+}
+
+.Home-ico {
+  width: 1.2em;
+}
+
+.Home-titulo-null {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Home-ico-null {
+  width: 5em;
 }

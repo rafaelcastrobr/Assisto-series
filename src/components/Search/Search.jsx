@@ -5,13 +5,12 @@ import { useContext, useState } from "react"
 import { Link } from "react-router-dom"
 import { ContentContext } from "../../context/ContentProvider"
 
+import { img_png_url } from '../../assets/img/ImportImg'
+
 
 export default function Search() {
   const { state: { apiDados } } = useContext(ContentContext)
   const [loading, setLoading] = useState(true)
-
-
-  const img = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'
 
   setTimeout(() => {
     setLoading(false)
@@ -28,7 +27,7 @@ export default function Search() {
             <div className="Search-unidade" >
               <Link to={`/serie/${apiDado.id}`} >
                 {apiDado.poster_path === null ? (
-                  <img src={img} style={{ width: '92px' }} alt='poster' />
+                  <img src={img_png_url} style={{ width: '92px' }} alt='poster' />
                 )
                   :
                   (
