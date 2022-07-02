@@ -16,3 +16,7 @@ https://assistoseries.netlify.app/
 ## 🥰 Preview
 
 <img src="src/assets/img/cap01.png" alt="cap01" width="300"/> <img src="src/assets/img/cap02.png" alt="cap01" width="300"/>
+
+## 🚧 Próximas Modificações
+
+[Kanban](https://github.com/rafaelcastrobr/Assisto-series/projects/1)
