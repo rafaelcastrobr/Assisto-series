@@ -5,6 +5,10 @@ export const INITIAL_STATE = {
   populares: [],
   apiTemporadas: [],
   minhas_series: [],
+  ultimoProxEp: {
+    ep: '',
+    exibir: false
+  },
   titulo: '',
   epChecked: false
 }
@@ -59,6 +63,14 @@ export function reducer(state, action) {
 
       return newState
     }
+    case 'ATUALIZA_STATUS_PROX_EP': {
+      const newState = { ...state }
+      //newState.ultimoProxEp.ep = ''
+      newState.ultimoProxEp.ep = action.payload || ''
+      newState.ultimoProxEp.exibir = action.exibir
+      
+      return newState
+    }
     case 'ATUALIZA_TEMP': {
       const newState = { ...state }
 
@@ -68,8 +80,6 @@ export function reducer(state, action) {
     }
     case 'ATUALIZA_CHECK': {
       const newState = { ...state }
-
-      newState.epChecked = action.payload
 
       return newState
     }

@@ -6,15 +6,14 @@ import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { ContentContext } from "../../context/ContentProvider"
 
+//continuar verificar
 
 export default function Serie() {
-  const { state: { apiTemporadas, epChecked, apiSerie }, dispatch } = useContext(ContentContext)
+  const { state: { apiTemporadas, apiSerie, ultimoProxEp }, dispatch } = useContext(ContentContext)
 
   const [loading, setLoading] = useState(true)
   const [exibirEpAdicionar, setExibirEpAdicionar] = useState(false)
   const [adicionado, setAdicionado] = useState(false)
-  const [botaoAdcTemporadaCompleta, setBotaoAdcTemporadaCompleta] = useState(false)
-  //const [epChecked, setEpChecked] = useState(false)
   const { id } = useParams()
 
   useEffect(() => {
@@ -25,10 +24,34 @@ export default function Serie() {
       serieApi()
       buscaSerieId()
       setLoading(false)
-
     }, 1000);
     // eslint-disable-next-line
   }, [id]);
+
+   function verificaUltimoEp(ultProxEp, status, temporadas ) {
+
+      if (status === "Em Exibição" && ultProxEp !== null) {
+
+        const data = arrumaData(ultProxEp.air_date)
+        const epNumber = ultProxEp.episode_number
+        const tempNumber = ultProxEp.season_number
+        const dados = `${data} - ${tempNumber}x${epNumber}`
+
+        dispatch({ type: 'ATUALIZA_STATUS_PROX_EP', payload: dados, exibir: true })
+
+      } else if (status !== "Em Exibição" && ultProxEp === null) {
+        
+        dispatch({ type: 'ATUALIZA_STATUS_PROX_EP', exibir: false })
+      }
+
+      if (status === "Em Exibição" && ultProxEp === null) {
+        
+        const dados = `T${+temporadas + 1}..`
+        dispatch({ type: 'ATUALIZA_STATUS_PROX_EP', payload: dados, exibir: true })
+
+      }
+
+  }
 
   function buscaTemporadaBotao(temporada_id) {
     let check = false
@@ -89,9 +112,9 @@ export default function Serie() {
 
     await axios.get(`https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.REACT_APP_LKA_KEY}&language=pt-BR`)
       .then(resp => {
-        const { name, poster_path, overview, number_of_seasons, last_air_date, backdrop_path, first_air_date, genres, status, networks, episode_run_time } = resp.data
+        const { name, poster_path, overview, number_of_seasons, next_episode_to_air, backdrop_path, first_air_date, genres, status, networks, episode_run_time } = resp.data
 
-        //console.log(resp.data)
+        console.log(resp.data)
         const dadosSerieApi = [{
           id,
           titulo: name,
@@ -104,15 +127,16 @@ export default function Serie() {
           status: corrigeStatus(status),
           canal: organizaArray(networks),
           tempo: episode_run_time,
-          ultimo_ep: arrumaData(last_air_date)
         }]
 
         serieTemporada(number_of_seasons)
-
+        verificaUltimoEp(next_episode_to_air, corrigeStatus(status), number_of_seasons)
 
         dispatch({ type: 'ATUALIZA_SERIE', payload: dadosSerieApi })
       })
+      
 
+      
   }
 
   function adicionarSerieNaLista() {
@@ -121,6 +145,7 @@ export default function Serie() {
     if (adicionado) return
 
     setExibirEpAdicionar(true)
+    
 
     const dados = {
       id: apiSerie[0].id,
@@ -162,8 +187,7 @@ export default function Serie() {
 
   async function serieTemporada(number_of_seasons) {
     const temporadas = []
-
-
+    
     for (let i = 1; i <= number_of_seasons; i++) {
       await axios.get(`https://api.themoviedb.org/3/tv/${id}/season/${i}?api_key=${process.env.REACT_APP_LKA_KEY}&language=pt-BR`)
         .then(resp => {
@@ -230,8 +254,6 @@ export default function Serie() {
               serie.ultimo_ep_visto = `T${proxTemp}..`
             }
 
-
-
           }
         })
       }
@@ -272,7 +294,6 @@ export default function Serie() {
       }
     })
     //console.log(todosEp)
-
     series.map(serie => {
       if (+serie.id === +id) {
         dispatch({ type: 'ATUALIZA_CHECK' })
@@ -290,6 +311,7 @@ export default function Serie() {
     <>
       <div className='loading-class'>{loading && <span class="loader"></span>}</div>
       {apiSerie.map(serie => {
+        
         return (
           <>
             <div>
@@ -314,6 +336,8 @@ export default function Serie() {
                     <div className='Serie-dados-numero-temporada'>
                       <p style={{ color: '#b6283f' }}><strong>{`${serie.generos}`}</strong></p>
                       <p><strong>{`${serie.canal}`}{+serie.tempo.length !== 0 ? ` | ${serie.tempo}min | ` : ' | '} {`${serie.status}`}</strong></p>
+                      <p>{ultimoProxEp.exibir && `Próx Exibição: ${ultimoProxEp.ep}`}</p>
+
                     </div>
                     <p className='Serie-dados-sinopse'>{serie.sinopse}</p>
                   </div>
