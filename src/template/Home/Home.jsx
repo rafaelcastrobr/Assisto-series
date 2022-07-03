@@ -47,6 +47,7 @@ export default function Home() {
 
   return (
     <>
+      
       <h2 className="Home-titulos">Populares  <span>{EmAlta_svg}</span></h2>
       <div className="Home-container">
         {populares.map(dados => {

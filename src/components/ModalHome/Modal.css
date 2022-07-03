@@ -1,0 +1,26 @@
+.Home-modal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+}
+
+.Home-modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #0b2230;
+  color: aliceblue;
+  width: 22em;
+  height: 25em;
+}
+
+.escolhido {
+  border: 3px solid  #d9da7d;
+  border-radius: 50px;
+}
