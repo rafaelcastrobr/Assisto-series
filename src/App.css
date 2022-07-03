@@ -11,3 +11,13 @@ p {
   justify-content: center;
   height: auto;
 }
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.pages {
+  flex: 1;
+}

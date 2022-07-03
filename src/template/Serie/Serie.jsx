@@ -75,7 +75,6 @@ export default function Serie() {
         if (serie.id === id) {
           setAdicionado(true)
           setExibirEpAdicionar(true)
-
         }
       })
     }

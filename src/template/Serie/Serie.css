@@ -12,7 +12,7 @@
   }
 
   .Serie-apiDados-agrupamento>details {
-    width: 70% !important;
+    width: 90% !important;
   }
 
 }
@@ -122,7 +122,6 @@
 .Serie-apiDados-agrupamento>details {
   margin-bottom: 1em;
   width: 25em;
-
 }
 
 .Serie-apiDados-agrupamento>details>summary {

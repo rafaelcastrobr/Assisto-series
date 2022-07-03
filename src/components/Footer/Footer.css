@@ -1,0 +1,28 @@
+.Footer-container {
+  position: relative;
+  bottom:0;
+  left:0;
+  margin: auto;
+  background-color: #0b2230;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  height: 2em;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.Footer-container > p {
+  margin-right: 1em;
+}
+
+.Footer-container > p > a {
+  text-decoration: none;
+  color: inherit
+}
+
+.Footer-img-coracao {
+  width: 1em;
+  color: red;
+}

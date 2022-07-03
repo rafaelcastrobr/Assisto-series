@@ -7,28 +7,36 @@ import Home from './template/Home/Home';
 import Serie from './template/Serie/Serie';
 
 import { HashRouter, Route, Routes } from 'react-router-dom'
+import Footer from './components/Footer/Footer';
 
 function App() {
 
   //process.env.REACT_APP_LKA
 
   return (
-    <div className='container'>
+    <>
       <ContentProvider>
 
-      <HashRouter basename="/">
-        <Header />
-        <Routes>
-          <Route path='/' element={ <Home />} />
-          <Route path='/search/:titulo' element={ <Search />} />
-          <Route path='/serie/:id/' element={ <Serie />} />
-          
-        </Routes>
-      </HashRouter>
-        
-        
+        <HashRouter basename="/">
+          <div className='container'>
+            <div className='pages'>
+              <Header />
+              <Routes>
+                <Route path='/' element={<Home />} />
+                <Route path='/search/:titulo' element={<Search />} />
+                <Route path='/serie/:id/' element={<Serie />} />
+
+              </Routes>
+            </div>
+            <div>
+              <Footer />
+            </div>
+          </div>
+        </HashRouter>
+
+
       </ContentProvider>
-    </div>
+    </>
 
   );
 }

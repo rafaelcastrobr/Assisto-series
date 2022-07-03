@@ -47,7 +47,7 @@ export default function Home() {
 
   return (
     <>
-      <h2 className="Home-titulos">Populares <span>{EmAlta_svg}</span></h2>
+      <h2 className="Home-titulos">Populares  <span>{EmAlta_svg}</span></h2>
       <div className="Home-container">
         {populares.map(dados => {
           return (
@@ -72,7 +72,7 @@ export default function Home() {
       </div>
 
       <div>
-        {minhas_series.length > 0 ? <h2 className="Home-titulos">Minha Lista <span>{MinhaLista_svg}</span></h2>
+        {minhas_series.length > 0 ? <h2 className="Home-titulos">Minha Lista  <span>{MinhaLista_svg}</span></h2>
           :
           <div className="Home-titulo-null">
             <span>{ListaBookNull_svg}</span>
