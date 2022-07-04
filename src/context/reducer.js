@@ -1,3 +1,4 @@
+import data from "../data/data"
 
 export const INITIAL_STATE = {
   apiDados: [],
@@ -6,9 +7,14 @@ export const INITIAL_STATE = {
   apiTemporadas: [],
   minhas_series: [],
   botaoAdcTodasTemp: true,
+  imgModal: data,
   ultimoProxEp: {
     ep: '',
     exibir: false
+  },
+  usuario: {
+    nome: '',
+    id: ''
   },
   titulo: '',
   epChecked: false
@@ -70,6 +76,21 @@ export function reducer(state, action) {
       newState.ultimoProxEp.ep = action.payload || ''
       newState.ultimoProxEp.exibir = action.exibir
       
+      return newState
+    }
+    case 'ATUALIZA_MODAL_IMG': {
+      const newState = { ...state}
+      
+      newState.imgModal[action.id].class = action.payload
+
+      return newState
+    }
+    case 'ATUALIZA_MODAL_USUARIO': {
+      const newState = { ...state} 
+      
+      newState.usuario.nome = action.nome
+      newState.usuario.id = action.id 
+      console.log(newState.usuario.nome, newState.usuario.id)
       return newState
     }
     case 'ATUALIZA_TEMP': {

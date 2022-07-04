@@ -7,37 +7,47 @@ import avatarSeis from './img/avatar6.svg'
 import avatarSete from './img/avatar7.svg'
 import avatarOito from './img/avatar8.svg'
 
-export default [
+const data =[
+  {
+    "id": 0,
+    "img": avatarUm,
+    "class": ''
+  },
   {
     "id": 1,
-    "img": avatarUm
+    "img": avatarDois,
+    "class": ''
   },
   {
     "id": 2,
-    "img": avatarDois
+    "img": avatarTres,
+    "class": ''
   },
   {
     "id": 3,
-    "img": avatarTres
+    "img": avatarQuatro,
+    "class": ''
   },
   {
     "id": 4,
-    "img": avatarQuatro
+    "img": avatarCinco,
+    "class": ''
   },
   {
     "id": 5,
-    "img": avatarCinco
+    "img": avatarSeis,
+    "class": ''
   },
   {
     "id": 6,
-    "img": avatarSeis
+    "img": avatarSete,
+    "class": ''
   },
   {
     "id": 7,
-    "img": avatarSete
-  },
-  {
-    "id": 8,
-    "img": avatarOito
+    "img": avatarOito,
+    "class": ''
   },
 ]
+
+export default data
