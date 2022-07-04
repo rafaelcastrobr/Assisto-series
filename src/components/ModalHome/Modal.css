@@ -7,17 +7,42 @@
   position: fixed;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 9999;
+ 
 }
 
 .Home-modal {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #0b2230;
+  background-color: rgb(11, 34, 48);
   color: aliceblue;
-  width: 22em;
+  width: 23em;
   height: 25em;
+  border-radius: 5px;
+}
+
+.Home-modal > h3 {
+  margin: 1em 0 0.5em 0;
+}
+
+.Home-modal-img {
+  margin: 1em;
+}
+
+.Home-modal-nome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1em 0 0.5em 0;
+  width: inherit;
+  height: inherit;
+}
+
+.Home-modal-btn {
+  border: none;
+  padding: 0.7em;
+  border-radius: 3px;
+  margin-bottom: 1em;
 }
 
 .escolhido {

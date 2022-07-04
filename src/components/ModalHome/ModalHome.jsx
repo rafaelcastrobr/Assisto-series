@@ -29,7 +29,6 @@ export default function ModalHome() {
 
       dispatch({ type: 'ATUALIZA_MODAL_IMG', payload: 'escolhido', id: id })
       dispatch({ type: 'ATUALIZA_MODAL_USUARIO', id: id, nome: usuario.nome})
-      console.log('id: ', id);
       
     }
 
@@ -47,6 +46,7 @@ export default function ModalHome() {
       id: usuario.id
     }
     localStorage.setItem('LOGIN', JSON.stringify(data))
+    dispatch({type: 'FECHA_MODAL', payload: false})
   }
 
   function atualizaNome (e) {
@@ -59,21 +59,21 @@ export default function ModalHome() {
     <div className="Home-modal-container">
       <div className='Home-modal'>
         <h3>OLÁ{usuario.nome.length > 0 ? ', ' + usuario.nome : ''} :D</h3>
-        <label>Escolha sua imagem</label>
-        <div>
+        {errorImg.toggle ? <span style={{color: 'red'}}>{errorImg.error}</span>  : 'Escolha um avatar'}
+        <div className='Home-modal-img'>
           {imgModal.map(imgs => {
             return (
               <img id={imgs.id} onClick={_ => escolheImg(imgs.id)} className={imgs.class} src={imgs.img} />
             )
           })}
-          {errorImg.toggle ? errorImg.error : ''}
         </div>
-        <div>
+         
+        <div className='Home-modal-nome'>
           <label> Seu Nome</label>
           <input type="text" value={usuario.nome} onChange={e => atualizaNome(e)}/>
-          {errorNome.toggle ? errorNome.error : ''}
+          <span style={{color: 'red'}}>{errorNome.toggle ? errorNome.error : ''}</span>
         </div>
-        <button onClick={entrar}>Entrar</button>
+        <button className='Home-modal-btn' onClick={entrar}>Entrar</button>
       </div>
     </div>
   )

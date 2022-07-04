@@ -7,6 +7,7 @@ export const INITIAL_STATE = {
   apiTemporadas: [],
   minhas_series: [],
   botaoAdcTodasTemp: true,
+  exibirModal: true,
   imgModal: data,
   ultimoProxEp: {
     ep: '',
@@ -90,7 +91,13 @@ export function reducer(state, action) {
       
       newState.usuario.nome = action.nome
       newState.usuario.id = action.id 
-      console.log(newState.usuario.nome, newState.usuario.id)
+      return newState
+    }
+    case 'FECHA_MODAL': {
+      const newState = { ...state}
+
+      newState.exibirModal = action.payload
+
       return newState
     }
     case 'ATUALIZA_TEMP': {

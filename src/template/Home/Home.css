@@ -3,6 +3,21 @@
   overflow-y: hidden;
 }
 
+.Home-modal-storage {
+  display: flex;
+  align-items: center;
+}
+
+.Home-modal-storage-btn {
+  padding: 0.2em;
+  border: none;
+  border-radius: 4px;
+  background-color: rgb(131, 49, 49);
+  color: aliceblue;
+  cursor: pointer;
+  margin-top: 0.5em;
+}
+
 .Home-populares {
   display: flex;
   flex-direction: column;

@@ -1,26 +1,42 @@
 import axios from "axios";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ContentContext } from "../../context/ContentProvider";
 import './Home.css'
 import { EmAlta_svg, MinhaLista_svg, ListaBookNull_svg, img_png_url } from "../../assets/img/ImportImg";
 import ModalHome from "../../components/ModalHome/ModalHome";
+import data from "../../data/data";
+
 document.title = 'Assisto Série'
 
 
 export default function Home() {
-  const { state: { populares, minhas_series }, dispatch } = useContext(ContentContext)
-
+  const { state: { populares, minhas_series, exibirModal, usuario }, dispatch } = useContext(ContentContext)
+  const [exibirAlterarNome, setExibirAlterarNome] = useState(false)
 
 
   useEffect(() => {
+    verificaUsuario()
     getSeriesPopular()
     pegaDadosApiMinhaSerie()
-
     // eslint-disable-next-line
   }, []);
 
+  function verificaUsuario() {
+    if (localStorage.getItem('LOGIN')) {
+      dispatch({ type: 'FECHA_MODAL', payload: false })
 
+      const dados = JSON.parse(localStorage.getItem('LOGIN'))
+      dispatch({ type: 'ATUALIZA_MODAL_USUARIO', id: dados.id, nome: dados.nome })
+
+      console.log(dados)
+    }
+  }
+
+  function trocarModal() {
+    dispatch({ type: 'FECHA_MODAL', payload: true })
+
+  }
 
   function pegaDadosApiMinhaSerie() {
     if (localStorage.getItem('MINHA_SERIE')) {
@@ -48,7 +64,16 @@ export default function Home() {
 
   return (
     <>
-      <ModalHome />
+      {exibirModal ? <ModalHome /> : ''}
+      {!exibirModal &&
+        <div className="Home-modal-storage">
+          <img onClick={() => setExibirAlterarNome(!exibirAlterarNome)} src={data[usuario.id].img} alt="" />
+          <div>
+            <p onClick={() => setExibirAlterarNome(!exibirAlterarNome)}>{usuario.nome}</p>
+            {exibirAlterarNome && <button className="Home-modal-storage-btn" onClick={() => trocarModal()}>ALTERAR</button>}
+          </div>
+        </div>}
+
       <h2 className="Home-titulos">Populares  <span>{EmAlta_svg}</span></h2>
       <div className="Home-container">
         {populares.map(dados => {
