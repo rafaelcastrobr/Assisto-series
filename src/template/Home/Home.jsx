@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ContentContext } from "../../context/ContentProvider";
 import './Home.css'
 import { EmAlta_svg, MinhaLista_svg, ListaBookNull_svg, img_png_url } from "../../assets/img/ImportImg";
+import ModalHome from "../../components/ModalHome/ModalHome";
 document.title = 'Assisto Série'
 
 
@@ -47,7 +48,7 @@ export default function Home() {
 
   return (
     <>
-      
+      <ModalHome />
       <h2 className="Home-titulos">Populares  <span>{EmAlta_svg}</span></h2>
       <div className="Home-container">
         {populares.map(dados => {
@@ -107,6 +108,7 @@ export default function Home() {
           })}
         </div>
       </div>
+
     </>
   )
 }
