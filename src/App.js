@@ -8,6 +8,7 @@ import Serie from './template/Serie/Serie';
 
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import Footer from './components/Footer/Footer';
+import Sobre from './template/Sobre/Sobre';
 
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
                 <Route path='/' element={<Home />} />
                 <Route path='/search/:titulo' element={<Search />} />
                 <Route path='/serie/:id/' element={<Serie />} />
-
+                <Route path='/sobre' element={<Sobre />} />
               </Routes>
             </div>
             <div>

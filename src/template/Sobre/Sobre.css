@@ -1,0 +1,23 @@
+@media (min-width: 700px) {
+  .Sobre-container {
+    padding: 1em 10em !important;
+  }
+}
+
+.Sobre-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em;
+  margin-top: 1em;
+  text-align: center;
+}
+
+.Sobre-container > div > p > a:visited {
+  color: chartreuse;
+}
+
+.Sobre-container > div > p {
+  margin: 1em;
+}
