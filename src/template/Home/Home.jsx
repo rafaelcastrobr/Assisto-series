@@ -29,7 +29,6 @@ export default function Home() {
       const dados = JSON.parse(localStorage.getItem('LOGIN'))
       dispatch({ type: 'ATUALIZA_MODAL_USUARIO', id: dados.id, nome: dados.nome })
 
-      console.log(dados)
     }
   }
 

@@ -240,7 +240,7 @@ export default function Serie() {
         apiTemporadas.map(temporada => {
           if (+id_temporada === temporada.id) {
             const proxEp = +num_ep + 1
-            const proxTemp = +num_temporada + 1
+            const temporadaAtual = num_temporada
             const tamanhoEps = +temporada.episodes.length
             const tamanhoTemp = +apiTemporadas.length
             const status = temporada.status
@@ -249,7 +249,7 @@ export default function Serie() {
             const temporadas = serie.temporadas
             serie.temporadas = todasTemp.concat(temporadas)
 
-            serie.ultimo_ep_visto = verificaProxEp(proxEp, proxTemp, tamanhoEps, tamanhoTemp, status)
+            serie.ultimo_ep_visto = verificaProxEp(proxEp, temporadaAtual, tamanhoEps, tamanhoTemp, status)
 
             serie.eps.map(ep => {
               temporada.episodes.map(id => {
@@ -270,11 +270,12 @@ export default function Serie() {
     localStorage.setItem('MINHA_SERIE', JSON.stringify(series))
   }
 
-  function verificaProxEp(proxEp, proxTemp, tamanhoEps, tamanhoTemp, status) {
-
+  function verificaProxEp(proxEp, temporadaAtual, tamanhoEps, tamanhoTemp, status) {
+    const proxTemp = +temporadaAtual + 1
+    
     if (+proxEp <= +tamanhoEps) {
 
-      return `${tamanhoTemp}x${proxEp}`
+      return `${temporadaAtual}x${proxEp}`
     }
     if (+proxEp > +tamanhoEps && proxTemp <= +tamanhoTemp) {
       return `${proxTemp}x1`
@@ -315,12 +316,12 @@ export default function Serie() {
     apiTemporadas.map(temporada => {
       if (id_temporada === temporada.id) {
         const proxEp = +temporada.numero_ep + 1
-        const proxTemp = +temporada.season_number + 1
+        const temporadaAtual = temporada.season_number
         const tamanhoEps = temporada.episodes.length
         const tamanhoTemp = apiTemporadas.length
         const status = temporada.status
 
-        ultEp = verificaProxEp(proxEp, proxTemp, tamanhoEps, tamanhoTemp, status)
+        ultEp = verificaProxEp(proxEp, temporadaAtual, tamanhoEps, tamanhoTemp, status)
 
         todasTemp.push(id_temporada)
 
